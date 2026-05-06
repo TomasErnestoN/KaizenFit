@@ -3,7 +3,7 @@
 ### Site Web de autocuidado diário
 
 <p align="center">
-  <img src="imagens/KaizenFit.png" width="300"/>
+  <img src="Imagens/KaizenFit.png" width="300"/>
 </p>
 
 <p align="center">
