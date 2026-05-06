@@ -31,6 +31,16 @@ Tudo isso inspirado na filosofia **Kaizen**, que significa melhoria contínua.
 
 ---
 
+<p align="center">
+  <img src="Imagens/Hierarquia.png" width="300"/>
+</p>
+
+<p align="center">
+  <strong>Hierarquia do projeto</strong>
+</p>
+
+---
+
 ## Equipe
 
 ### Tomás — Scrum Master
