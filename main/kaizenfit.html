@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <title>KaizenFit</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; color: #000; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== TOPO SEM LOGIN ===== */
+    .topo {
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(90deg, #1a4d2e, #2d7a4f);
+      padding: 8px 24px; position: sticky; top: 0; z-index: 100;
+    }
+    .topo-logo { height: 48px; width: auto; cursor: pointer; }
+    .topo-direita { display: flex; align-items: center; gap: 20px; }
+    .topo-link { color: white; font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 1px; font-weight: bold; cursor: pointer; }
+    .topo-btn-login {
+      color: white; font-family: 'Orbitron', sans-serif; font-size: 9px;
+      letter-spacing: 1px; font-weight: bold; border: 2px solid white;
+      padding: 6px 14px; border-radius: 4px; cursor: pointer; background: none;
+    }
+
+    /* ===== TOPO LOGADO ===== */
+    .topo-logado {
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(90deg, #1a4d2e, #2d7a4f);
+      padding: 8px 24px; position: sticky; top: 0; z-index: 100;
+    }
+    .topo-logado-logo { height: 48px; width: auto; cursor: pointer; }
+    .avatar-logado {
+      width: 34px; height: 34px; border-radius: 50%; background: #6fcf97;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; cursor: pointer; border: 2px solid white;
+      font-family: 'Orbitron', sans-serif; color: #1a4d2e; font-weight: bold;
+    }
+
+    /* ===== RODAPE ===== */
+    footer {
+      background: #1a4d2e; color: white; padding: 16px 24px; text-align: center;
+      font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 2px;
+    }
+    footer .rodape-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 10px; }
+    footer a { color: #9dc8b0; font-size: 8px; letter-spacing: 1px; cursor: pointer; }
+
+    /* ===== TELAS ===== */
+    .tela { display: none; flex-direction: column; min-height: 100vh; }
+    .tela.ativa { display: flex; }
+    .conteudo { flex: 1; }
+
+    /* ===== INPUTS / BOTOES ===== */
+    .campo {
+      width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 4px;
+      font-size: 0.9rem; margin-bottom: 12px; font-family: Arial, sans-serif;
+    }
+    .campo:focus { outline: none; border-color: #2d7a4f; }
+    .botao {
+      width: 100%; padding: 12px; background: #2d7a4f; color: white; border: none;
+      border-radius: 4px; cursor: pointer; font-family: 'Orbitron', sans-serif;
+      font-size: 9px; letter-spacing: 2px; font-weight: bold;
+    }
+    .botao:hover { background: #1a4d2e; }
+    .botao-sec {
+      width: 100%; padding: 12px; background: transparent; color: #2d7a4f;
+      border: 2px solid #2d7a4f; border-radius: 4px; cursor: pointer;
+      font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 2px;
+      font-weight: bold; margin-top: 8px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(160deg, #0d2b1a, #1a4d2e, #2d7a4f);
+      color: white; padding: 80px 40px; text-align: center;
+    }
+    .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 2rem; letter-spacing: 3px; margin-bottom: 16px; }
+    .hero h1 span { color: #6fcf97; }
+    .hero p { color: #b2dfca; max-width: 500px; margin: 0 auto 32px; line-height: 1.7; font-size: 0.95rem; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-hero-prim {
+      font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 2px;
+      padding: 14px 32px; background: #2d7a4f; color: white; border: 2px solid #6fcf97;
+      border-radius: 6px; cursor: pointer;
+    }
+    .btn-hero-sec {
+      font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 2px;
+      padding: 14px 32px; background: transparent; color: white;
+      border: 2px solid rgba(255,255,255,0.4); border-radius: 6px; cursor: pointer;
+    }
+
+    /* ===== CAIXA CENTRO ===== */
+    .caixa-centro {
+      max-width: 440px; margin: 60px auto; background: white; border-radius: 8px;
+      padding: 40px 36px; border: 1px solid #ddd; box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+    .caixa-titulo {
+      font-family: 'Orbitron', sans-serif; font-size: 1rem; letter-spacing: 2px;
+      margin-bottom: 24px; text-align: center;
+    }
+
+    /* ===== TABS ===== */
+    .tabs-bar { display: flex; border-bottom: 2px solid #e0e0e0; margin-bottom: 32px; }
+    .tab {
+      font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 2px;
+      padding: 12px 24px; cursor: pointer; color: #888; border: none;
+      background: none; border-bottom: 3px solid transparent; margin-bottom: -2px;
+    }
+    .tab.ativo { color: #2d7a4f; border-bottom-color: #2d7a4f; }
+
+    /* ===== PLAN GRID ===== */
+    .plan-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .plan-card {
+      background: white; border-radius: 8px; padding: 28px 20px; border: 2px solid #e0e0e0;
+      text-align: center; cursor: pointer; transition: border-color 0.2s, transform 0.2s;
+    }
+    .plan-card:hover { border-color: #2d7a4f; transform: translateY(-4px); }
+    .plan-card h4 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 8px; }
+    .plan-card p { color: #777; font-size: 0.82rem; }
+
+    /* ===== REFEICAO ===== */
+    .refeicao-box {
+      background: white; border-radius: 8px; border: 1px solid #e0e0e0;
+      padding: 28px; max-width: 600px; margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+    }
+    .refeicao-titulo { font-family: 'Orbitron', sans-serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 20px; }
+    .refeicao-row { display: flex; gap: 40px; margin-bottom: 20px; }
+    .refeicao-campo label { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 2px; color: #888; display: block; margin-bottom: 4px; }
+    .refeicao-valor { font-size: 1.1rem; font-weight: bold; color: #1a4d2e; }
+    .desc-label { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 2px; color: #888; margin-bottom: 8px; }
+    .desc-texto { font-size: 0.88rem; color: #555; line-height: 1.6; margin-bottom: 20px; }
+
+    /* ===== PROFISSIONAIS ===== */
+    .prof-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .prof-card {
+      background: white; border-radius: 8px; padding: 24px 20px;
+      border: 1px solid #e0e0e0; text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06); cursor: pointer; transition: transform 0.2s;
+    }
+    .prof-card:hover { transform: translateY(-4px); }
+    .prof-av {
+      width: 72px; height: 72px; border-radius: 50%; background: #e0f2e9;
+      margin: 0 auto 12px; display: flex; align-items: center;
+      justify-content: center; font-size: 1.6rem; font-weight: bold; color: #1a4d2e;
+    }
+    .prof-nome { font-family: 'Orbitron', sans-serif; font-size: 0.78rem; letter-spacing: 1px; margin-bottom: 4px; }
+    .prof-esp { font-size: 0.75rem; color: #2d7a4f; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .prof-bio { font-size: 0.82rem; color: #777; line-height: 1.5; margin-bottom: 14px; }
+    .btn-chat {
+      font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 2px;
+      padding: 8px 16px; background: #2d7a4f; color: white; border: none;
+      border-radius: 4px; cursor: pointer;
+    }
+
+    /* ===== CHAT INDIVIDUAL ===== */
+    .chat-layout { display: grid; grid-template-columns: 260px 1fr; gap: 24px; max-width: 860px; margin: 0 auto; }
+    .chat-perfil { background: white; border-radius: 8px; padding: 24px; border: 1px solid #e0e0e0; text-align: center; }
+    .chat-perfil-av {
+      width: 80px; height: 80px; border-radius: 50%; background: #e0f2e9;
+      margin: 0 auto 12px; display: flex; align-items: center;
+      justify-content: center; font-size: 1.6rem; font-weight: bold; color: #1a4d2e;
+    }
+    .chat-perfil-nome { font-family: 'Orbitron', sans-serif; font-size: 0.78rem; letter-spacing: 1px; margin-bottom: 4px; }
+    .chat-perfil-esp { font-size: 0.74rem; color: #2d7a4f; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .chat-perfil-bio { font-size: 0.82rem; color: #666; line-height: 1.6; text-align: left; }
+    .chat-box { background: white; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; display: flex; flex-direction: column; }
+    .chat-header { background: linear-gradient(90deg,#1a4d2e,#2d7a4f); padding: 14px 18px; }
+    .chat-header-txt { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 2px; color: white; }
+    .chat-msgs { padding: 16px; flex: 1; min-height: 260px; max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+    .msg-recebida { background: #e0f2e9; border-radius: 8px; padding: 10px 14px; max-width: 80%; font-size: 0.84rem; color: #1a4d2e; }
+    .msg-enviada { background: #2d7a4f; border-radius: 8px; padding: 10px 14px; max-width: 80%; font-size: 0.84rem; color: white; align-self: flex-end; margin-left: auto; }
+    .chat-input-row { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 8px; }
+    .chat-input { flex: 1; padding: 9px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.85rem; }
+    .chat-send { padding: 9px 16px; background: #2d7a4f; color: white; border: none; border-radius: 4px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 1px; }
+
+    /* ===== CONVERSAS ===== */
+    .conv-lista { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+    .conv-item {
+      background: white; border-radius: 8px; padding: 14px 18px; border: 1px solid #e0e0e0;
+      display: flex; align-items: center; gap: 14px; cursor: pointer; transition: transform 0.15s;
+    }
+    .conv-item:hover { transform: translateX(4px); }
+    .conv-av {
+      width: 44px; height: 44px; border-radius: 50%; background: #e0f2e9;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: bold; color: #1a4d2e; flex-shrink: 0;
+    }
+    .conv-info { flex: 1; }
+    .conv-nome { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 1px; margin-bottom: 3px; }
+    .conv-preview { font-size: 0.8rem; color: #888; }
+    .conv-radio { width: 18px; height: 18px; border: 2px solid #ccc; border-radius: 50%; flex-shrink: 0; }
+
+    /* ===== TREINO ===== */
+    .treino-box {
+      background: white; border-radius: 8px; padding: 32px; max-width: 480px;
+      margin: 0 auto; border: 1px solid #e0e0e0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07); text-align: center;
+    }
+    .treino-plano { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 2px; color: #888; margin-bottom: 8px; }
+    .treino-nome { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 24px; }
+    .treino-timer { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: #2d7a4f; letter-spacing: 4px; margin-bottom: 20px; }
+    .treino-btns { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+    .treino-btn {
+      font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 2px;
+      padding: 10px 18px; border: 2px solid #2d7a4f; color: #2d7a4f;
+      background: transparent; border-radius: 4px; cursor: pointer;
+    }
+    .treino-btn:hover { background: #2d7a4f; color: white; }
+    .treino-cal { background: #e0f2e9; color: #1a4d2e; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 8px 18px; border-radius: 20px; display: inline-block; }
+
+    /* ===== SECAO ===== */
+    .secao { padding: 48px 40px; }
+    .secao-titulo { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 8px; }
+    .secao-sub { color: #777; font-size: 0.88rem; margin-bottom: 32px; line-height: 1.6; }
+
+    /* ===== ESP GRID ===== */
+    .esp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 680px; margin: 0 auto; }
+    .esp-card {
+      background: white; border-radius: 8px; padding: 28px 20px; border: 2px solid #e0e0e0;
+      text-align: center; cursor: pointer; transition: border-color 0.2s, transform 0.2s;
+    }
+    .esp-card:hover { border-color: #2d7a4f; transform: translateY(-4px); }
+    .esp-card h4 { font-family: 'Orbitron', sans-serif; font-size: 0.78rem; letter-spacing: 1px; }
+    .esp-card p { font-size: 0.8rem; color: #777; margin-top: 8px; }
+
+    
+    /* ===== COMUNIDADE CHAT ===== */
+    .community-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .community-sidebar {
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+
+    .community-sidebar-header {
+      background: linear-gradient(90deg,#1a4d2e,#2d7a4f);
+      padding: 16px;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .community-room {
+      padding: 14px 16px;
+      border-bottom: 1px solid #efefef;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .community-room:hover {
+      background: #f7faf8;
+    }
+
+    .community-room.active {
+      background: #e8f5ee;
+      border-left: 4px solid #2d7a4f;
+    }
+
+    .community-room-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .community-room-preview {
+      font-size: 0.82rem;
+      color: #777;
+    }
+
+    .community-chat {
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      min-height: 520px;
+    }
+
+    .community-chat-header {
+      background: linear-gradient(90deg,#1a4d2e,#2d7a4f);
+      padding: 18px 22px;
+      color: white;
+    }
+
+    .community-chat-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .community-chat-sub {
+      font-size: 0.82rem;
+      color: #d7f3e3;
+    }
+
+    .community-messages {
+      flex: 1;
+      padding: 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #f8faf9;
+    }
+
+    .community-msg {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .community-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #dff2e8;
+      color: #1a4d2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .community-bubble {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      max-width: 80%;
+    }
+
+    .community-user {
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #1a4d2e;
+      font-size: 0.85rem;
+    }
+
+    .community-text {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .community-input {
+      border-top: 1px solid #ededed;
+      padding: 14px;
+      display: flex;
+      gap: 10px;
+      background: white;
+    }
+
+    .community-input input {
+      flex: 1;
+      border: 1px solid #d8d8d8;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.9rem;
+    }
+
+    .community-input button {
+      background: #2d7a4f;
+      border: none;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      letter-spacing: 1px;
+    }
+
+    @media(max-width: 900px) {
+      .community-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- LOGO EXTERNA -->
+<img id="logo-src" src="KaizenFit.png" style="display:none">
+
+<!-- ==========================================
+     TELA 1: LANDING (SEM LOGIN)
+     ========================================== -->
+<div class="tela ativa" id="t-landing">
+  <header class="topo">
+    <img class="topo-logo" src="KaizenFit.png" onclick="ir('t-landing')">
+    <div class="topo-direita">
+      <span class="topo-link" onclick="ir('t-login')">LOGIN</span>
+    </div>
+  </header>
+  <div class="conteudo">
+    <div class="hero">
+      <h1>Cuide da sua saúde.<br><span>Evolua todo dia.</span></h1>
+      <p>Treinos, dietas e profissionais num só lugar. Gratis para comecar.</p>
+      <div class="hero-btns">
+        <button class="btn-hero-prim" onclick="ir('t-login')">REGISTRE-SE DE GRACA</button>
+        <button class="btn-hero-sec" onclick="ir('t-login')">VER PLANO DE TREINO</button>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="rodape-links">
+      <a onclick="ir('t-sobre')">SOBRE NOS</a>
+      <a onclick="ir('t-contato-sem-login')">ENTRE EM CONTATO</a>
+    </div>
+    2025 KAIZENFIT — TODO DIA, UMA MELHORIA.
+  </footer>
+</div>
+
+<!-- ==========================================
+     TELA 2: LOGIN
+     ========================================== -->
+<div class="tela" id="t-login">
+  <header class="topo">
+    <img class="topo-logo" src="KaizenFit.png" onclick="ir('t-landing')">
+  </header>
+  <div class="conteudo">
+    <div class="caixa-centro">
+      <h2 class="caixa-titulo">LOGIN</h2>
+      <input class="campo" type="email" placeholder="E-mail">
+      <input class="campo" type="password" placeholder="Senha">
+      <button class="botao" onclick="ir('t-home-logado')">ENTRAR</button>
+      <p style="text-align:center;margin-top:16px;font-size:0.82rem;color:#777;">
+        Nao tem conta? <span style="color:#2d7a4f;cursor:pointer;font-weight:bold;" onclick="ir('t-registro')">Registre-se de graca</span>
+      </p>
+    </div>
+  </div>
+  <footer>
+    2025 KAIZENFIT — TODO DIA, UMA MELHORIA.
+  </footer>
+</div>
+
+<!-- ==========================================
+     TELA 3: REGISTRO (separado do contato)
+     ========================================== -->
+<div class="tela" id="t-registro">
+  <header class="topo">
+    <img class="topo-logo" src="KaizenFit.png" onclick="ir('t-landing')">
+    <div class="topo-direita">
+      <button class="topo-btn-login" onclick="ir('t-login')">LOGIN</button>
+    </div>
+  </header>
+  <div class="conteudo">
+    <div class="caixa-centro">
+      <h2 class="caixa-titulo">REGISTRE-SE DE GRACA</h2>
+      <input class="campo" type="text" placeholder="Nome completo">
+      <input class="campo" type="email" placeholder="E-mail">
+      <input class="campo" type="password" placeholder="Senha">
+      <input class="campo" type="password" placeholder="Confirmar senha">
+      <button class="botao" onclick="ir('t-home-logado')">CRIAR CONTA</button>
+      <p style="text-align:center;margin-top:16px;font-size:0.82rem;color:#777;">
+        Ja tem conta? <span style="color:#2d7a4f;cursor:pointer;font-weight:bold;" onclick="ir('t-login')">Faca login</span>
+      </p>
+    </div>
+  </div>
+  <footer>
+    2025 KAIZENFIT — TODO DIA, UMA MELHORIA.
+  </footer>
+</div>
+
+<!-- ==========================================
+     TELA 4: ENTRE EM CONTATO (SEM LOGIN)
+     ========================================== -->
+<div class="tela" id="t-contato-sem-login">
+  <header class="topo">
+    <img class="topo-logo" src="KaizenFit.png" onclick="ir('t-landing')">
+    <div class="topo-direita">
+      <button class="topo-btn-login" onclick="ir('t-login')">LOGIN</button>
+    </div>
+  </header>
+  <div class="conteudo">
+    <div class="caixa-centro" style="max-width:520px;">
+      <h2 class="caixa-titulo">ENTRE EM CONTATO</h2>
+      <input class="campo" type="text" placeholder="Nome completo">
+      <input class="campo" type="email" placeholder="E-mail">
+      <input class="campo" type="tel" placeholder="Telefone">
+      <textarea class="campo" rows="4" placeholder="Mensagem..."></textarea>
+      <button class="botao" onclick="this.textContent='MENSAGEM ENVIADA!'">ENVIAR MENSAGEM</button>
+    </div>
+  </div>
+  <footer>
+    <div class="rodape-links">
+      <a onclick="ir('t-sobre')">SOBRE NOS</a>
+      <a onclick="ir('t-contato-sem-login')">ENTRE EM CONTATO</a>
+    </div>
+    2025 KAIZENFIT — TODO DIA, UMA MELHORIA.
+  </footer>
+</div>
+
+<!-- ==========================================
+     TELA 5: SOBRE NOS
+     ========================================== -->
+<div class="tela" id="t-sobre">
+  <header class="topo">
+    <img class="topo-logo" src="KaizenFit.png" onclick="ir('t-landing')">
+    <div class="topo-direita">
+      <button class="topo-btn-login" onclick="ir('t-login')">LOGIN</button>
+    </div>
+  </header>
+  <div class="conteudo">
+    <div class="caixa-centro" style="max-width:560px;text-align:center;">
+      <h2 class="caixa-titulo">SOBRE NOS</h2>
+      <p style="font-size:0.92rem;color:#555;line-height:1.8;margin-bottom:16px;">
+        Kaizen significa <strong>"melhoria continua"</strong>.
+        No KaizenFit, acreditamos que qualquer pessoa pode transformar sua saude com pequenos passos diarios.
+      </p>
+      <p style="font-family:'Orbitron',sans-serif;font-size:0.9rem;color:#2d7a4f;letter-spacing:3px;">
+        TODO DIA, UMA MELHORIA.
+      </p>
+    </div>
+  </div>
+  <footer>
+    <div class="rodape-links">
+      <a onclick="ir('t-sobre')">SOBRE NOS</a>
+      <a onclick="ir('t-contato-sem-login')">ENTRE EM CONTATO</a>
+    </div>
+    2025 KAIZENFIT — TODO DIA, UMA MELHORIA.
+  </footer>
+</div>
+
+<!-- ==========================================
+     TELA 6: HOME LOGADO
+     ========================================== -->
+<div class="tela" id="t-home-logado">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <div class="tabs-bar">
+        <button class="tab ativo" onclick="switchTab(this,'tab-planejar')">PLANEJAR</button>
+        <button class="tab" onclick="switchTab(this,'tab-acompanhar')">ACOMPANHAR PLANEJAMENTO</button>
+      </div>
+      <div id="tab-planejar">
+        <div class="plan-grid">
+          <div class="plan-card" onclick="ir('t-selecionar-plano')">
+            <h4>INICIANTE</h4>
+            <p>Para quem esta comecando.</p>
+          </div>
+          <div class="plan-card" onclick="ir('t-selecionar-plano')">
+            <h4>INTERMEDIARIO</h4>
+            <p>Para ir alem e superar limites.</p>
+          </div>
+          <div class="plan-card" onclick="ir('t-selecionar-plano')">
+            <h4>AVANCADO</h4>
+            <p>Para maxima performance.</p>
+          </div>
+        </div>
+      </div>
+      <div id="tab-acompanhar" style="display:none;">
+        <div style="text-align:center;padding:32px;">
+          <p style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:#888;margin-bottom:16px;">PLANEJAMENTO ATUAL — INTERMEDIARIO</p>
+          <button class="botao" style="max-width:300px;margin:0 auto;display:block;" onclick="ir('t-treino-ativo')">VER TREINO ATIVO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<!-- ==========================================
+     TELA 7: SELECIONAR PLANEJAMENTO
+     ========================================== -->
+<div class="tela" id="t-selecionar-plano">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png" onclick="ir('t-home-logado')">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <h2 class="secao-titulo">Selecione o seu planejamento</h2>
+      <div class="plan-grid" style="grid-template-columns:repeat(2,1fr);max-width:600px;">
+        <div class="plan-card" onclick="ir('t-dietas')">
+          <h4>DIETAS</h4>
+          <p>Refeicoes e calorias do dia</p>
+        </div>
+        <div class="plan-card" onclick="ir('t-treino-ativo')">
+          <h4>PLANO DE TREINO</h4>
+          <p>Exercicios com timer</p>
+        </div>
+        <div class="plan-card" onclick="ir('t-especialidades')">
+          <h4>FALAR COM PROFISSIONAL</h4>
+          <p>Chat com especialistas</p>
+        </div>
+        <div class="plan-card" onclick="ir('t-comunidade')">
+          <h4>COMUNIDADE</h4>
+          <p>Posts e motivacao</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<!-- ==========================================
+     TELA 8: REFEICAO DE HOJE
+     ========================================== -->
+<div class="tela" id="t-dietas">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png" onclick="ir('t-selecionar-plano')">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <div class="refeicao-box">
+        <div class="refeicao-titulo">Refeicao de hoje</div>
+        <div class="refeicao-row">
+          <div class="refeicao-campo">
+            <label>HORARIO</label>
+            <div class="refeicao-valor">12:30</div>
+          </div>
+          <div class="refeicao-campo">
+            <label>CALORIAS DIARIAS</label>
+            <div class="refeicao-valor">1.800 kcal</div>
+          </div>
+        </div>
+        <div class="desc-label">DESCRICAO</div>
+        <div class="desc-texto">
+          Arroz integral (150g), frango grelhado (180g), salada verde com azeite, feijao carioca (100g) e uma fruta de sobremesa. Hidratacao: 2L de agua ao longo do dia.
+        </div>
+        <button class="botao" onclick="this.textContent='JA COMI!'">JA COMI</button>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<!-- ==========================================
+     TELA 9: ESPECIALIDADES
+     ========================================== -->
+<div class="tela" id="t-especialidades">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png" onclick="ir('t-selecionar-plano')">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <h2 class="secao-titulo">Falar com Profissional</h2>
+      <p class="secao-sub">Escolha a especialidade que voce precisa.</p>
+      <div class="esp-grid">
+        <div class="esp-card" onclick="ir('t-profissionais-lista')">
+          <h4>NUTRICAO</h4>
+          <p>Dietas e alimentacao saudavel</p>
+        </div>
+        <div class="esp-card" onclick="ir('t-profissionais-lista')">
+          <h4>PERSONAL TRAINER</h4>
+          <p>Treinos e condicionamento fisico</p>
+        </div>
+        <div class="esp-card" onclick="ir('t-profissionais-lista')">
+          <h4>PSICOLOGIA</h4>
+          <p>Motivacao e bem-estar mental</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<!-- ==========================================
+     TELA 10: LISTA DE PROFISSIONAIS COM BIO
+     ========================================== -->
+<div class="tela" id="t-profissionais-lista">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png" onclick="ir('t-especialidades')">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <h2 class="secao-titulo">Falar com Profissional</h2>
+      <p class="secao-sub">Escolha com quem quer conversar.</p>
+      <div class="prof-grid">
+        <div class="prof-card" onclick="abrirProfissional('Dra. Camila Souza','CS','Nutricionista','Especialista em emagrecimento e reeducacao alimentar. 8 anos de experiencia.')">
+          <div class="prof-av">CS</div>
+          <div class="prof-nome">DRA. CAMILA SOUZA</div>
+          <div class="prof-esp">Nutricionista</div>
+          <div class="prof-bio">Especialista em emagrecimento e reeducacao alimentar. 8 anos de experiencia.</div>
+          <button class="btn-chat">INICIAR CHAT</button>
+        </div>
+        <div class="prof-card" onclick="abrirProfissional('Prof. Ricardo Lima','RL','Personal Trainer','Focado em treinos para iniciantes, idosos e reabilitacao. 10 anos de experiencia.')">
+          <div class="prof-av">RL</div>
+          <div class="prof-nome">PROF. RICARDO LIMA</div>
+          <div class="prof-esp">Personal Trainer</div>
+          <div class="prof-bio">Focado em treinos para iniciantes, idosos e reabilitacao. 10 anos de experiencia.</div>
+          <button class="btn-chat">INICIAR CHAT</button>
+        </div>
+        <div class="prof-card" onclick="abrirProfissional('Ana Paula Costa','AP','Personal Trainer','Especializada em hipertrofia feminina e condicionamento funcional.')">
+          <div class="prof-av">AP</div>
+          <div class="prof-nome">ANA PAULA COSTA</div>
+          <div class="prof-esp">Personal Trainer</div>
+          <div class="prof-bio">Especializada em hipertrofia feminina e condicionamento funcional.</div>
+          <button class="btn-chat">INICIAR CHAT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<!-- ==========================================
+     TELA 11: CHAT INDIVIDUAL
+     ========================================== -->
+<div class="tela" id="t-chat-individual">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png" onclick="ir('t-profissionais-lista')">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <h2 class="secao-titulo" style="margin-bottom:24px;">Falar com Profissional</h2>
+      <div class="chat-layout">
+        <div class="chat-perfil">
+          <div class="chat-perfil-av" id="chat-av">CS</div>
+          <div class="chat-perfil-nome" id="chat-nome">DRA. CAMILA SOUZA</div>
+          <div class="chat-perfil-esp" id="chat-esp">Nutricionista</div>
+          <div class="chat-perfil-bio" id="chat-bio">Especialista em emagrecimento e reeducacao alimentar. 8 anos de experiencia.</div>
+        </div>
+        <div class="chat-box">
+          <div class="chat-header">
+            <div class="chat-header-txt" id="chat-header-nome">DRA. CAMILA SOUZA</div>
+          </div>
+          <div class="chat-msgs" id="chat-msgs-ind">
+            <div class="msg-recebida">Ola! Como posso te ajudar hoje?</div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chat-ind-inp" type="text" placeholder="Digite sua mensagem..." onkeydown="if(event.key==='Enter')enviarInd()">
+            <button class="chat-send" onclick="enviarInd()">ENVIAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<!-- ==========================================
+     TELA 12: LISTA DE CONVERSAS
+     ========================================== -->
+<div class="tela" id="t-conversas">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png" onclick="ir('t-selecionar-plano')">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <h2 class="secao-titulo">Conversas</h2>
+      <div class="conv-lista">
+        <div class="conv-item" onclick="ir('t-chat-individual')">
+          <div class="conv-av">CS</div>
+          <div class="conv-info">
+            <div class="conv-nome">CHAT DE CONVERSA 01</div>
+            <div class="conv-preview">Dra. Camila Souza — Nutricionista</div>
+          </div>
+          <div class="conv-radio"></div>
+        </div>
+        <div class="conv-item" onclick="ir('t-chat-individual')">
+          <div class="conv-av">RL</div>
+          <div class="conv-info">
+            <div class="conv-nome">CHAT DE CONVERSA 02</div>
+            <div class="conv-preview">Prof. Ricardo Lima — Personal Trainer</div>
+          </div>
+          <div class="conv-radio"></div>
+        </div>
+        <div class="conv-item" onclick="ir('t-chat-individual')">
+          <div class="conv-av">AP</div>
+          <div class="conv-info">
+            <div class="conv-nome">CHAT DE CONVERSA 03</div>
+            <div class="conv-preview">Ana Paula Costa — Personal Trainer</div>
+          </div>
+          <div class="conv-radio"></div>
+        </div>
+        <div class="conv-item" onclick="ir('t-chat-individual')">
+          <div class="conv-av">KF</div>
+          <div class="conv-info">
+            <div class="conv-nome">CHAT DE CONVERSA 04</div>
+            <div class="conv-preview">Suporte KaizenFit</div>
+          </div>
+          <div class="conv-radio"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<!-- ==========================================
+     TELA 13: TREINO ATIVO
+     ========================================== -->
+<div class="tela" id="t-treino-ativo">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png" onclick="ir('t-selecionar-plano')">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <div class="treino-box">
+        <div class="treino-plano">PLANEJAMENTO — INTERMEDIARIO</div>
+        <div class="treino-nome">TREINO 1 — PEITO E TRICEPS</div>
+        <div class="treino-timer" id="t-timer">00:00</div>
+        <div class="treino-btns">
+          <button class="treino-btn" onclick="iniciarTimer()">COMECAR</button>
+          <button class="treino-btn" onclick="resetarTimer()">RESETAR</button>
+          <button class="treino-btn" onclick="pararTimer()">PARAR</button>
+        </div>
+        <div class="treino-cal">~320 CALORIAS</div>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<!-- ==========================================
+     TELA 14: COMUNIDADE
+     ========================================== -->
+<div class="tela" id="t-comunidade">
+  <header class="topo-logado">
+    <img class="topo-logado-logo" src="KaizenFit.png" onclick="ir('t-selecionar-plano')">
+    <div class="avatar-logado">U</div>
+  </header>
+  <div class="conteudo">
+    <div class="secao">
+      <h2 class="secao-titulo">Comunidade KaizenFit</h2>
+      <p class="secao-sub">Compartilhe sua jornada, inspire e seja inspirado.</p>
+      
+<div class="community-layout">
+  <div class="community-sidebar">
+    <div class="community-sidebar-header">COMUNIDADE KAIZENFIT</div>
+
+    <div class="community-room active">
+      <div class="community-room-title">FOCO EM EMAGRECIMENTO</div>
+      <div class="community-room-preview">Novas estratégias e evolução diária.</div>
+    </div>
+
+    <div class="community-room">
+      <div class="community-room-title">TREINOS INTENSOS</div>
+      <div class="community-room-preview">Compartilhe cargas, PRs e dicas.</div>
+    </div>
+
+    <div class="community-room">
+      <div class="community-room-title">ALIMENTAÇÃO</div>
+      <div class="community-room-preview">Receitas, dieta e rotina saudável.</div>
+    </div>
+
+    <div class="community-room">
+      <div class="community-room-title">DISCIPLINA MENTAL</div>
+      <div class="community-room-preview">Consistência e mentalidade Kaizen.</div>
+    </div>
+  </div>
+
+  <div class="community-chat">
+    <div class="community-chat-header">
+      <div class="community-chat-title">CHAT DA COMUNIDADE</div>
+      <div class="community-chat-sub">Converse em tempo real com os membros.</div>
+    </div>
+
+    <div class="community-messages">
+      <div class="community-msg">
+        <div class="community-avatar">A</div>
+        <div class="community-bubble">
+          <div class="community-user">André</div>
+          <div class="community-text">
+            Finalizei meu treino hoje às 6h. Pequena evolução todos os dias.
+          </div>
+        </div>
+      </div>
+
+      <div class="community-msg">
+        <div class="community-avatar">M</div>
+        <div class="community-bubble">
+          <div class="community-user">Marina</div>
+          <div class="community-text">
+            Comecei déficit calórico essa semana e já estou sentindo diferença.
+          </div>
+        </div>
+      </div>
+
+      <div class="community-msg">
+        <div class="community-avatar">R</div>
+        <div class="community-bubble">
+          <div class="community-user">Rafael</div>
+          <div class="community-text">
+            Alguém tem dica para melhorar recuperação pós treino?
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="community-input">
+      <input type="text" placeholder="Digite sua mensagem..." />
+      <button>ENVIAR</button>
+    </div>
+  </div>
+</div>
+
+          </div>
+          <h4>Perdi 8kg em 2 meses!</h4>
+          <p>Com o plano do KaizenFit e o apoio da comunidade, aqui estou eu!</p>
+        </div>
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-av">JR</div>
+            <div><div class="post-autor">Sr. Jose, 67 anos</div><div class="post-data">ha 5 dias</div></div>
+          </div>
+          <h4>Comecei tarde, mas comecei!</h4>
+          <p>Com 67 anos, nunca me senti tao disposto. Recomendo!</p>
+        </div>
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-av">FR</div>
+            <div><div class="post-autor">Fernanda Ramos</div><div class="post-data">ha 1 semana</div></div>
+          </div>
+          <h4>Minha autoestima voltou</h4>
+          <p>Kaizen e um dia de cada vez.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>2025 KAIZENFIT — TODO DIA, UMA MELHORIA.</footer>
+</div>
+
+<script>
+function ir(id) {
+  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.getElementById(id).classList.add('ativa');
+  window.scrollTo(0,0);
+}
+
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
+  document.querySelectorAll('#tab-planejar, #tab-acompanhar').forEach(c => c.style.display = 'none');
+  btn.classList.add('ativo');
+  document.getElementById(id).style.display = 'block';
+}
+
+let timerInt = null, seg = 0;
+function iniciarTimer() {
+  if (timerInt) return;
+  timerInt = setInterval(() => {
+    seg++;
+    const m = String(Math.floor(seg/60)).padStart(2,'0');
+    const s = String(seg%60).padStart(2,'0');
+    document.getElementById('t-timer').textContent = m+':'+s;
+  }, 1000);
+}
+function pararTimer() { clearInterval(timerInt); timerInt = null; }
+function resetarTimer() { pararTimer(); seg = 0; document.getElementById('t-timer').textContent = '00:00'; }
+
+function abrirProfissional(nome, iniciais, esp, bio) {
+  document.getElementById('chat-av').textContent = iniciais;
+  document.getElementById('chat-nome').textContent = nome.toUpperCase();
+  document.getElementById('chat-esp').textContent = esp;
+  document.getElementById('chat-bio').textContent = bio;
+  document.getElementById('chat-header-nome').textContent = nome.toUpperCase();
+  document.getElementById('chat-msgs-ind').innerHTML = '<div class="msg-recebida">Ola! Como posso te ajudar hoje?</div>';
+  ir('t-chat-individual');
+}
+
+function enviarInd() {
+  const inp = document.getElementById('chat-ind-inp');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  const msgs = document.getElementById('chat-msgs-ind');
+  const div = document.createElement('div');
+  div.className = 'msg-enviada';
+  div.textContent = txt;
+  msgs.appendChild(div);
+  inp.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(() => {
+    const res = document.createElement('div');
+    res.className = 'msg-recebida';
+    res.textContent = 'Obrigada pela mensagem! Responderei em breve.';
+    msgs.appendChild(res);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1000);
+}
+</script>
+</body>
+</html>
